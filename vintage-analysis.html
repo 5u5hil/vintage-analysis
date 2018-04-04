@@ -1,0 +1,125 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-tabs/paper-tabs.html">
+<link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../neon-animation/web-animations.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../google-chart/google-chart.html">
+
+
+
+
+
+
+<dom-module id="vintage-analysis">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      body {
+        margin: 0;
+        display: flex;
+        align-items: flex-end;
+        height: 80px;
+        color: white;
+      }
+
+      paper-tabs {
+        font-family: 'Roboto', 'Noto', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        width: 100%;
+        text-transform: uppercase;
+        margin-bottom: 1px;
+        background: #009688;
+
+      }
+
+      google-chart{
+        width : 100%;
+      }
+    </style>
+    <h2>[[title]]</h2>
+
+    <paper-dropdown-menu id="atype" label="Account Type" on-iron-select="change">
+      <paper-listbox slot="dropdown-content" class="dropdown-content" attr-for-selected="item-value" selected="1">
+        <paper-item item-value="1">SME-S</paper-item>
+        <paper-item item-value="2">SME-M</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
+
+    <paper-dropdown-menu label="DPD Bucker">
+      <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+        <paper-item>30+</paper-item>
+        <paper-item>60+</paper-item>
+        <paper-item>90+</paper-item>
+        <paper-item>120+</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
+
+    <paper-dropdown-menu label="Loan Terms">
+      <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+        <paper-item>Monthly</paper-item>
+        <paper-item>Quarterly</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
+
+    <paper-dropdown-menu label="Observation">
+      <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+        <paper-item>Monthly</paper-item>
+        <paper-item>Quarterly</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
+
+
+    <paper-tabs selected="{{selected}}" scrollable>
+      <paper-tab>Graph</paper-tab>
+      <paper-tab>Table</paper-tab>
+    </paper-tabs>
+
+    <iron-pages selected="{{selected}}">
+      <div>  
+          <google-chart style=""
+          type='line'
+          options='{"title":"Test Chart #1", "interpolateNulls" : "false", "hAxis":{"showTextEvery" :"1"} ,"vAxis":{"viewWindow": {"min": "0"}}}'
+           data='http://127.0.0.1:8000/vintage-analysis/json'> </google-chart>
+    </div>
+      <div>Table</div>
+    </iron-pages>
+  </template>
+
+
+
+  <script>
+    /**
+     * `vintage-analysis`
+     * vintage analysis of financial data
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class VintageAnalysis extends Polymer.Element {
+      static get is() { return 'vintage-analysis'; }
+      static get properties() {
+        return {
+          title: {
+            type: String,
+            value: 'Vintage Analysis'
+          },
+          selected: {
+            type: Number,
+            value: 0
+          }
+        };
+      }
+      change(evt) {
+        console.log(evt.detail.item);
+      }
+    }
+
+    window.customElements.define(VintageAnalysis.is, VintageAnalysis);
+  </script>
+</dom-module>
